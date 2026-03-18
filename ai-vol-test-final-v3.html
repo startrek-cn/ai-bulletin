@@ -36,6 +36,28 @@
             color: #666;
             line-height: 2;
         }
+        .stats-overview {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            padding: 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+        }
+        .stats-item {
+            background: rgba(255,255,255,0.2);
+            padding: 12px 25px;
+            border-radius: 8px;
+            color: white;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .stats-item.total {
+            background: rgba(255,255,255,0.3);
+            font-weight: bold;
+        }
         .section {
             margin-bottom: 40px;
         }
@@ -146,6 +168,14 @@
                 <div><strong>生成时间</strong>：2026 年 3 月 18 日</div>
                 <div><strong>供稿</strong>：Amy F. Fowler-Vale（AI 全自动系统）</div>
             </div>
+        </div>
+        
+        <div class="stats-overview">
+            <div class="stats-item">🎤 专家观点：8 条</div>
+            <div class="stats-item">🏛 政策治理：7 条</div>
+            <div class="stats-item">🔬 技术前沿：8 条</div>
+            <div class="stats-item">🏭 行业应用：7 条</div>
+            <div class="stats-item total">总计：30 条</div>
         </div>
         
         <div class="section">
