@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>观沧小红书自动创作系统 v6.0 流程图</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: linear-gradient(135deg, #0f0c29, #302b63); min-height: 100vh; color: #fff; line-height: 1.6; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        header { text-align: center; margin-bottom: 60px; }
+        h1 { font-size: 2.2rem; background: linear-gradient(90deg, #00d9ff, #00ff88); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+        .subtitle { color: #8892b0; font-size: 1.1rem; }
+        .badge { display: inline-block; background: rgba(0,217,255,0.2); border: 1px solid #00d9ff; padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; margin-top: 15px; }
+        .phase { background: rgba(255,255,255,0.05); border-radius: 16px; padding: 30px; margin: 20px 0; border: 1px solid rgba(255,255,255,0.1); }
+        .phase-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .phase-num { width: 50px; height: 50px; background: linear-gradient(135deg, #00d9ff, #00ff88); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; color: #1a1a2e; }
+        .phase-title { font-size: 1.4rem; }
+        .tag { display: inline-block; padding: 3px 12px; border-radius: 15px; font-size: 0.8rem; margin: 3px; }
+        .howard { background: rgba(255,193,7,0.3); border: 1px solid #ffc107; color: #ffc107; }
+        .sheldon { background: rgba(233,30,99,0.3); border: 1px solid #e91e63; color: #e91e63; }
+        .penny { background: rgba(0,188,212,0.3); border: 1px solid #00bcd4; color: #00bcd4; }
+        .leonard { background: rgba(76,175,80,0.3); border: 1px solid #4caf50; color: #4caf50; }
+        .xhs { background: rgba(156,39,176,0.3); border: 1px solid #9c27b0; color: #9c27b0; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .card-title { color: #00d9ff; font-size: 1rem; margin-bottom: 15px; }
+        ul { list-style: none; padding-left: 20px; }
+        ul li::before { content: "• "; color: #00d9ff; }
+        .arrow { text-align: center; font-size: 2rem; color: #00d9ff; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        th { color: #00d9ff; }
+        .new-badge { background: #e91e63; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; margin-left: 8px; }
+        .complete { background: linear-gradient(135deg, rgba(0,255,136,0.2), rgba(0,217,255,0.2)); border-radius: 20px; padding: 40px; text-align: center; border: 2px solid #00ff88; margin-top: 40px; }
+        .stats { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+        .stat { text-align: center; }
+        .stat-value { font-size: 2rem; color: #00d9ff; font-weight: bold; }
+        .stat-label { color: #8892b0; font-size: 0.9rem; }
+        footer { text-align: center; margin-top: 60px; padding: 30px; color: #8892b0; }
+        .sources-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .source-tag { background: rgba(0,217,255,0.2); padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; }
+        .style-tag { background: rgba(233,30,99,0.3); padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; margin: 4px; display: inline-block; }
+        .prompt-box { background: #0d1117; border-radius: 8px; padding: 15px; font-family: monospace; font-size: 0.8rem; color: #c9d1d9; border: 1px solid #30363d; margin: 8px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌌 观沧小红书自动创作系统 v6.0</h1>
+            <p class="subtitle">科技资讯 × 科幻预言 × 多风格写作 × 自动化发布</p>
+            <span class="badge">🚀 整合tech-news-digest + content-factory + xiaohongshu-skills</span>
+        </header>
+        
+        <!-- Howard采集 -->
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-num">0</div>
+                <div>
+                    <h2 class="phase-title">🤖 Howard 动态采集 <span class="tag howard">Howard</span> <span class="new-badge">升级</span></h2>
+                    <p style="color:#8892b0;">tech-news-digest 6源并行采集</p>
+                </div>
+            </div>
+            
+            <div class="grid">
+                <div class="card">
+                    <div class="card-title">📡 6大数据源</div>
+                    <div class="sources-list">
+                        <span class="source-tag">📰 RSS feeds (62+)</span>
+                        <span class="source-tag">🐦 Twitter KOL (48+)</span>
+                        <span class="source-tag">🔍 Web Search</span>
+                        <span class="source-tag">💻 GitHub Releases</span>
+                        <span class="source-tag">📺 Reddit</span>
+                        <span class="source-tag">🔄 智能去重合并</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">📋 采集流程</div>
+                    <div class="prompt-box">
+# tech-news-digest pipeline
+python3 scripts/run-pipeline.py \
+  --defaults config/defaults \
+  --hours 48 \
+  --output /tmp/td-merged.json
+
+# 自动并行采集 + 质量评分
+# 输出: 20篇高质量科技新闻
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top:15px;">
+                <span style="color:#ffc107; font-size:0.9rem;">📚 Fallback: 预设8领域高质量新闻</span>
+                <div class="sources-list" style="margin-top:8px;">
+                    <span class="source-tag">人工智能</span>
+                    <span class="source-tag">人形机器人</span>
+                    <span class="source-tag">脑机智能</span>
+                    <span class="source-tag">量子信息</span>
+                    <span class="source-tag">商业航天</span>
+                    <span class="source-tag">自动驾驶</span>
+                    <span class="source-tag">AI芯片</span>
+                    <span class="source-tag">生物信息</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="arrow">↓</div>
+        
+        <!-- Sheldon选题 -->
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-num">1</div>
+                <div>
+                    <h2 class="phase-title">🧠 Sheldon 选题推荐 <span class="tag sheldon">Sheldon</span> <span class="new-badge">升级</span></h2>
+                    <p style="color:#8892b0;">科幻知识库热度排序 + MiniMax智能匹配</p>
+                </div>
+            </div>
+            
+            <div class="grid">
+                <div class="card">
+                    <div class="card-title">📚 科幻知识库（30+作品，按热度排序）</div>
+                    <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                        <span class="style-tag">🔥 三体</span>
+                        <span class="style-tag">🔥 流浪地球</span>
+                        <span class="style-tag">🔥 黑客帝国</span>
+                        <span class="style-tag">🔥 星球大战</span>
+                        <span class="style-tag">🔥 阿凡达</span>
+                        <span class="style-tag">🔥 银翼杀手</span>
+                        <span class="style-tag">🔥 西部世界</span>
+                        <span class="style-tag">🔥 黑镜</span>
+                        <span class="style-tag">🔥 新世纪福音战士</span>
+                        <span class="style-tag">📖 基地</span>
+                        <span class="style-tag">📖 1984</span>
+                        <span class="style-tag">📖 沙丘</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">🤖 MiniMax智能匹配</div>
+                    <div class="prompt-box">
+# Sheldon调用MiniMax:
+# 1. 分析科技新闻热度
+# 2. 匹配高热度科幻作品
+# 3. 生成5个共鸣组合
+
+输出格式:
+1. [科幻名] × [科技领域]: 共鸣角度
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="arrow">↓</div>
+        
+        <!-- 用户选择 -->
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-num">✋</div>
+                <div>
+                    <h2 class="phase-title">👤 用户选择 + 风格选择</h2>
+                </div>
+            </div>
+            <div style="display:flex; gap:15px; flex-wrap:wrap;">
+                <div>
+                    <span style="color:#00d9ff;">选择选题:</span>
+                    <span class="tag" style="background:rgba(0,255,136,0.2);">[1-5] 选编号 [r]刷新 [c]自定义 [q]退出</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="arrow">↓</div>
+        
+        <!-- Top10研究 -->
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-num">2</div>
+                <div>
+                    <h2 class="phase-title">📱 write-xiaohongshu 研究 <span class="tag xhs">直接执行</span></h2>
+                    <p style="color:#8892b0;">Top10图文 + 评论共鸣分析</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="arrow">↓</div>
+        
+        <!-- Headline Machine -->
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-num">3</div>
+                <div>
+                    <h2 class="phase-title">✍️ Headline Machine <span class="tag sheldon">Sheldon</span> <span class="new-badge">新增</span></h2>
+                    <p style="color:#8892b0;">MiniMax生成20个爆款标题，选最优</p>
+                </div>
+            </div>
+            <div class="prompt-box">
+# Headline Machine生成:
+- 疑问句型: "为什么xxx?"
+- 数字型: "3个xxx的秘密"
+- 情绪型: "终于有人读懂了"
+- 揭秘型: "xxx的真相"
+
+每个标题≤20字符，引发好奇心
+            </div>
+        </div>
+        
+        <div class="arrow">↓</div>
+        
+        <!-- 内容创作 -->
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-num">4</div>
+                <div>
+                    <h2 class="phase-title">✍️ 内容创作 <span class="tag sheldon">Sheldon</span> <span class="new-badge">扩展</span></h2>
+                    <p style="color:#8892b0;">7种写作风格 + 风格轮换</p>
+                </div>
+            </div>
+            
+            <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:15px;">
+                <div class="style-tag">🎤 脱口秀</div>
+                <div class="style-tag">🌌 银河系漫游指南</div>
+                <div class="style-tag">📖 故事叙述</div>
+                <div class="style-tag">💡 揭秘型</div>
+                <div class="style-tag">🎭 独白型</div>
+                <div class="style-tag">😂 吐槽型</div>
+                <div class="style-tag">📕 小红书文案</div>
+            </div>
+            
+            <div class="grid" style="margin-top:20px;">
+                <div class="card">
+                    <div class="card-title">🎤 脱口秀风格</div>
+                    <p style="color:#c9d1d9; font-size:0.85rem;">连续反问、情绪递进、意外反转</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">🌌 银河系漫游指南风格</div>
+                    <p style="color:#c9d1d9; font-size:0.85rem;">英式幽默、荒诞对比、意外智慧</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">📕 小红书文案风格</div>
+                    <p style="color:#c9d1d9; font-size:0.85rem;">短句、emoji、互动感强</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="arrow">↓</div>
+        
+        <!-- 配图 -->
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-num">5</div>
+                <div>
+                    <h2 class="phase-title">🎨 Penny 配图 <span class="tag penny">Penny</span> <span class="new-badge">优化</span></h2>
+                    <p style="color:#8892b0;">小红书风格Prompt库（10+套）</p>
+                </div>
+            </div>
+            
+            <div class="grid">
+                <div class="card">
+                    <div class="card-title">🎭 作品专属Prompt</div>
+                    <ul style="color:#c9d1d9; font-size:0.85rem;">
+                        <li>银翼杀手 → 赛博朋克、雨夜霓虹</li>
+                        <li>三体 → 三颗太阳、宇宙感</li>
+                        <li>黑客帝国 → 绿色代码雨、矩阵</li>
+                        <li>流浪地球 → 地球引擎、史诗感</li>
+                        <li>新世纪福音战士 → 绫波丽、eva机甲</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-title">✨ 小红书风格特征</div>
+                    <ul style="color:#c9d1d9; font-size:0.85rem;">
+                        <li>情绪感 > 技术感</li>
+                        <li>暖色调 > 冷色调</li>
+                        <li>人像 > 机械</li>
+                        <li>意境 > 写实</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="arrow">↓</div>
+        
+        <!-- 发布 -->
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-num">6</div>
+                <div>
+                    <h2 class="phase-title">🔵 Leonard 发布 <span class="tag leonard">Leonard</span> <span class="new-badge">稳定化</span></h2>
+                    <p style="color:#8892b0;">重试机制 + 失败保存草稿</p>
+                </div>
+            </div>
+            
+            <div class="prompt-box">
+# 发布流程:
+1. check-login 检查登录状态
+2. fill-publish 填写表单
+3. click-publish 点击发布
+4. 失败自动重试3次
+5. 最终失败保存草稿 + 截图
+            </div>
+        </div>
+        
+        <!-- 完成 -->
+        <div class="complete">
+            <h2>🎉 v6.0 整合完成</h2>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">数据源类型</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">30+</div>
+                    <div class="stat-label">科幻作品</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">7</div>
+                    <div class="stat-label">写作风格</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">10+</div>
+                    <div class="stat-label">配图Prompt</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Skill整合表 -->
+        <div class="phase" style="margin-top:60px;">
+            <div class="phase-header">
+                <div class="phase-num">📊</div>
+                <div>
+                    <h2 class="phase-title">v6.0 Skill整合表</h2>
+                </div>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>功能</th>
+                        <th>来源Skill</th>
+                        <th>v6.0整合</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>科技资讯采集</td>
+                        <td>tech-news-digest</td>
+                        <td>6源并行采集 → 新闻池</td>
+                    </tr>
+                    <tr>
+                        <td>标题生成</td>
+                        <td>content-factory (Headline Machine)</td>
+                        <td>20个标题 → 最优选择</td>
+                    </tr>
+                    <tr>
+                        <td>多风格写作</td>
+                        <td>content-factory (Writer)</td>
+                        <td>7种风格模板</td>
+                    </tr>
+                    <tr>
+                        <td>ArXiv论文</td>
+                        <td>arxiv-watcher</td>
+                        <td>可选补充深度内容</td>
+                    </tr>
+                    <tr>
+                        <td>小红书研究</td>
+                        <td>write-xiaohongshu</td>
+                        <td>Top10 + 评论分析</td>
+                    </tr>
+                    <tr>
+                        <td>自动化发布</td>
+                        <td>xiaohongshu-skills</td>
+                        <td>登录检查 + 重试机制</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <footer>
+            <p>观沧小红书自动创作系统 v6.0</p>
+            <p style="margin-top:10px;">整合tech-news-digest + content-factory + xiaohongshu-skills</p>
+        </footer>
+    </div>
+</body>
+</html>
